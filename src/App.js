@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import Notfound from "../src/app/component/notfound/Notfound";
+import { publicRouter } from "./app/route/route";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          {publicRouter.map((item, index) => {
+            const Page = item.element;
+            return item.layout ? (
+              <Route
+                key={index + "routerpriva"}
+                path={item.path}
+                element={
+                  <item.layout type={item?.type}>
+                    <Page />
+                  </item.layout>
+                }
+              />
+            ) : (
+              <Route
+                key={item?.path + index}
+                path={item?.path}
+                element={<Page />}
+              />
+            );
+          })}
+          <Route path="*" element={<Notfound />} />
+        </Routes>
+        <ToastContainer autoClose={1500} style={{ fontSize: "15px" }} />
+      </div>
+    </Router>
   );
 }
 
