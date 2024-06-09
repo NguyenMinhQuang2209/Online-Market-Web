@@ -17,6 +17,8 @@
   border-radius: 10px;
   position: relative;
   padding:20px 0;
+  max-height: 90%;
+  overflow: auto;
 }
 .create_close_wrap {
   position: absolute;
@@ -63,6 +65,7 @@
   box-shadow: 2.5px 3px 0 #000;
   outline: none;
   transition: ease 0.25s;
+  min-height: 40px;
 }
 
 .create_input:focus {

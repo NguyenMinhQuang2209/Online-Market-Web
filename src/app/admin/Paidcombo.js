@@ -104,9 +104,17 @@ const AddNewPaidCombo = ({ setShow }) => {
           </div>
           <div style={{ marginTop: "20px" }} className="create_input_container">
             <input
-              placeholder="Giá trị (ngày)"
+              placeholder="Số tháng"
               className="create_input"
               name="text"
+            />
+          </div>
+          <div style={{ marginTop: "20px" }} className="create_input_container">
+            <textarea
+              placeholder="Mô tả"
+              className="create_input"
+              name="text"
+              style={{resize:"vertical"}}
             />
           </div>
           <div className="btn_create_container">
