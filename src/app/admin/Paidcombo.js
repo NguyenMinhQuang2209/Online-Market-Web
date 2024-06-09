@@ -1,16 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useState } from "react";
+import "./customStyle.scss";
 
 const Paidcombo = () => {
+  const [showAdd, setShowAdd] = useState(false);
+
   return (
     <div>
       <div
         style={{
           display: "flex",
           marginTop: "20px",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
         }}
-      ></div>
+      >
+        <button
+          onClick={() => {
+            setShowAdd(true);
+          }}
+          className="btn btn-primary"
+        >
+          Thêm mới
+        </button>
+      </div>
       <section style={{ marginTop: "15px" }} className="ftco-section">
         <div className="row">
           <div className="col-md-12">
@@ -61,8 +72,60 @@ const Paidcombo = () => {
         </div>
       </section>
       {/* {accounts?.accounts && <Pagination count={accounts?.total} />} */}
+      {showAdd && <AddNewPaidCombo setShow={setShowAdd} />}
     </div>
   );
 };
-
+const AddNewPaidCombo = ({ setShow }) => {
+  return (
+    <div className="create_container">
+      <div className="create_wrap">
+        <div
+          onClick={() => {
+            setShow(false);
+          }}
+          className="create_close_wrap"
+        >
+          <i className="fa-solid fa-x"></i>
+        </div>
+        <div>
+          <div
+            style={{ marginBottom: "20px", marginTop: "30px" }}
+            className="create_input_container"
+          >
+            <input placeholder="Tên" className="create_input" name="text" />
+          </div>
+          <div className="create_input_container">
+            <input
+              placeholder="Giá tiền"
+              className="create_input"
+              name="text"
+            />
+          </div>
+          <div style={{ marginTop: "20px" }} className="create_input_container">
+            <input
+              placeholder="Giá trị (ngày)"
+              className="create_input"
+              name="text"
+            />
+          </div>
+          <div className="btn_create_container">
+            <button style={{ margin: "0 5px" }} class="btn btn-primary">
+              Tạo mới
+            </button>
+            <button
+              onClick={() => {
+                setShow(false);
+              }}
+              style={{ margin: "0 5px" }}
+              class="btn btn-secondary"
+            >
+              Hủy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 export default Paidcombo;
