@@ -2,7 +2,18 @@ import React from "react";
 import { Carousel } from "react-bootstrap";
 import "./style.scss";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const Home = () => {
+  const check = async () => {
+    try {
+      const data = await axios.get("/api/test/hello");
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  check();
+
   return (
     <div>
       <div>
@@ -48,7 +59,9 @@ const Home = () => {
             </Link>
             <div>
               <Link className="link" to="/login">
-                <div style={{color:"black"}} className="user-panel">Đăng nhập</div>
+                <div style={{ color: "black" }} className="user-panel">
+                  Đăng nhập
+                </div>
               </Link>
             </div>
           </div>
