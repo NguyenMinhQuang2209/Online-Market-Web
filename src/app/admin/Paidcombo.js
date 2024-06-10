@@ -1,5 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import "./customStyle.scss";
+import axios from "axios";
+import CategoryAPI from "../service/CategoryService";
 
 const Paidcombo = () => {
   const [showAdd, setShowAdd] = useState(false);
@@ -77,6 +79,75 @@ const Paidcombo = () => {
   );
 };
 const AddNewPaidCombo = ({ setShow }) => {
+  const [err, setErr] = useState({
+    planName: "",
+    description: "",
+    price: "",
+    duration: "",
+  });
+
+  const planNameRef = useRef();
+  const descriptionRef = useRef();
+  const priceRef = useRef();
+  const durationRef = useRef();
+
+  const handleCreateNewRegistration = async () => {
+    try {
+      const registration = {
+        planName: planNameRef.current.value,
+        description: descriptionRef.current.value,
+        price: priceRef.current.value,
+        duration: durationRef.current.value,
+      };
+      const registrationFeildName = {
+        planName: "Tên",
+        price: "Giá",
+        duration: "Số ngày",
+      };
+      const excludesFields = ["description"];
+      const isNumberFields = ["price", "duration"];
+      const isNotNegativeNumberFields = ["price", "duration"];
+      let isErr = false;
+      let newError = {};
+      for (const [key, value] of Object.entries(registration)) {
+        if (!excludesFields.includes(key)) {
+          if (!registration[key]) {
+            isErr = true;
+            newError[key] =
+              registrationFeildName[key] + " không được bỏ trống!";
+          }
+        }
+
+        if (isNumberFields.includes(key)) {
+          if (!newError[key]) {
+            if (isNaN(value)) {
+              newError[key] = registrationFeildName[key] + " phải là 1 con số!";
+            }
+          }
+        }
+
+        if (isNotNegativeNumberFields.includes(key)) {
+          if (!newError[key]) {
+            if (value < 0) {
+              newError[key] =
+                registrationFeildName[key] + " phải lớn hơn hoặc bằng 0!";
+            }
+          }
+        }
+      }
+      setErr(newError);
+
+      if (!isErr) {
+        const data = await CategoryAPI.create({
+          registration,
+        });
+        console.log(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="create_container">
       <div className="create_wrap">
@@ -88,37 +159,87 @@ const AddNewPaidCombo = ({ setShow }) => {
         >
           <i className="fa-solid fa-x"></i>
         </div>
-        <div>
-          <div
-            style={{ marginBottom: "20px", marginTop: "30px" }}
-            className="create_input_container"
-          >
-            <input placeholder="Tên" className="create_input" name="text" />
-          </div>
+        <div style={{ marginBottom: "20px", marginTop: "30px" }}>
+          {err?.planName && (
+            <div className="create_input_container">
+              <i
+                style={{
+                  color: "red",
+                  marginBottom: "10px",
+                  marginTop: "-10px",
+                }}
+              >
+                {err?.planName}
+              </i>
+            </div>
+          )}
           <div className="create_input_container">
             <input
-              placeholder="Giá tiền"
+              ref={planNameRef}
+              placeholder="Tên *"
               className="create_input"
               name="text"
             />
           </div>
+          {err?.price && (
+            <div className="create_input_container">
+              <i
+                style={{
+                  color: "red",
+                  marginBottom: "-10px",
+                  marginTop: "10px",
+                }}
+              >
+                {err?.price}
+              </i>
+            </div>
+          )}
           <div style={{ marginTop: "20px" }} className="create_input_container">
             <input
-              placeholder="Số tháng"
+              ref={priceRef}
+              placeholder="Giá tiền *"
               className="create_input"
-              name="text"
+              type="number"
+              min={0}
+            />
+          </div>
+          {err?.duration && (
+            <div className="create_input_container">
+              <i
+                style={{
+                  color: "red",
+                  marginBottom: "-10px",
+                  marginTop: "10px",
+                }}
+              >
+                {err?.duration}
+              </i>
+            </div>
+          )}
+          <div style={{ marginTop: "20px" }} className="create_input_container">
+            <input
+              ref={durationRef}
+              placeholder="Số ngày *"
+              className="create_input"
+              type="number"
+              min={0}
             />
           </div>
           <div style={{ marginTop: "20px" }} className="create_input_container">
             <textarea
-              placeholder="Mô tả"
+              ref={descriptionRef}
+              placeholder="Mô tả *"
               className="create_input"
               name="text"
-              style={{resize:"vertical"}}
+              style={{ resize: "vertical" }}
             />
           </div>
           <div className="btn_create_container">
-            <button style={{ margin: "0 5px" }} class="btn btn-primary">
+            <button
+              onClick={handleCreateNewRegistration}
+              style={{ margin: "0 5px" }}
+              className="btn btn-primary"
+            >
               Tạo mới
             </button>
             <button
@@ -126,7 +247,7 @@ const AddNewPaidCombo = ({ setShow }) => {
                 setShow(false);
               }}
               style={{ margin: "0 5px" }}
-              class="btn btn-secondary"
+              className="btn btn-secondary"
             >
               Hủy
             </button>

@@ -9,6 +9,7 @@ import Categories from "./Categories";
 import Paidcombo from "./Paidcombo";
 import StoreownerConfirm from "./StoreownerConfirm";
 import Products from "./Products";
+import Theme from "./Theme";
 
 const Admin = () => {
   const { slug } = useParams();
@@ -64,7 +65,7 @@ const Admin = () => {
             </div>
             <div style={{ minHeight: "50vh" }} className="navbar-nav w-100">
               <Link
-                to="/dashboard"
+                to="/admin/dashboard"
                 className={`nav-item nav-link ${
                   type === "dashboard" && "active"
                 }`}
@@ -72,7 +73,7 @@ const Admin = () => {
                 <i className="fa fa-tachometer-alt me-2"></i>Dashboard
               </Link>
               <Link
-                to="/accounts"
+                to="/admin/accounts"
                 className={`nav-item nav-link ${
                   type === "accounts" && "active"
                 }`}
@@ -80,7 +81,7 @@ const Admin = () => {
                 <i className="fa fa-users me-2"></i>Tài khoản
               </Link>
               <Link
-                to="/categories"
+                to="/admin/categories"
                 className={`nav-item nav-link ${
                   type === "categories" && "active"
                 }`}
@@ -88,7 +89,7 @@ const Admin = () => {
                 <i className="fa fa-list me-2"></i>Thể loại
               </Link>
               <Link
-                to="/products"
+                to="/admin/products"
                 className={`nav-item nav-link ${
                   type === "products" && "active"
                 }`}
@@ -96,7 +97,7 @@ const Admin = () => {
                 <i className="fa fa-box-open me-2"></i>Sản phẩm
               </Link>
               <Link
-                to="/storeownersconfirm"
+                to="/admin/storeownersconfirm"
                 className={`nav-item nav-link ${
                   type === "storeownersconfirm" && "active"
                 }`}
@@ -104,12 +105,20 @@ const Admin = () => {
                 <i className="fa fa-check me-2"></i>Tiểu thương
               </Link>
               <Link
-                to="/paidcombo"
+                to="/admin/paidcombo"
                 className={`nav-item nav-link ${
                   type === "paidcombo" && "active"
                 }`}
               >
                 <i className="fa fa-money-bill me-2"></i>Gói giá tiền
+              </Link>
+              <Link
+                to="/admin/theme"
+                className={`nav-item nav-link ${
+                  type === "theme" && "active"
+                }`}
+              >
+                <i className="fa fa-droplet me-2"></i>Theme
               </Link>
             </div>
           </nav>
@@ -158,6 +167,7 @@ const Admin = () => {
           {type === "products" && <Products />}
           {type === "storeownersconfirm" && <StoreownerConfirm />}
           {type === "paidcombo" && <Paidcombo />}
+          {type === "theme" && <Theme />}
         </div>
       </div>
       <div
