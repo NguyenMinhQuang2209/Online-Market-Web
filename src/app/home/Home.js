@@ -2,9 +2,20 @@ import React, { useEffect } from "react";
 import { Carousel } from "react-bootstrap";
 import "./style.scss";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 const Home = () => {
   const navigate = useNavigate();
+
+  const isTokenExpired = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      console.log(decoded);
+      const currentTime = Date.now() / 1000; // Convert to seconds
+      return decoded.exp < currentTime;
+    } catch (error) {
+      return true; // Error in decoding or expired
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
