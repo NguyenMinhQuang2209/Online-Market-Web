@@ -1,18 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Carousel } from "react-bootstrap";
 import "./style.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const Home = () => {
-  const check = async () => {
-    try {
-      const data = await axios.get("/api/test/hello");
-      console.log(data);
-    } catch (err) {
-      console.log(err);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/admin/dashboard");
     }
-  };
-  check();
+  }, []);
 
   return (
     <div>

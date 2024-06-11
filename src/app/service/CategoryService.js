@@ -1,17 +1,11 @@
-import axios from "axios";
+import AxiosCustom from "../component/axios_custom/AxiosCustom";
 
 const CategoryAPI = {
   create: async ({ registration }) => {
-    try {
-      const response = await axios.post(
-        "/api/admin/registration-plans/create",
-        registration
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Failed to create registration:", error);
-      throw error;
-    }
+    return await AxiosCustom.post(
+      "/api/admin/registration-plans/create",
+      registration
+    );
   },
 };
 export default CategoryAPI;

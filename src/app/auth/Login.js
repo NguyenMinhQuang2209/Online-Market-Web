@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import AuthAPI from "../service/AuthService";
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -14,11 +15,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     const user = {
-      gmail: emailRef.current?.value,
+      email: emailRef.current?.value,
       password: passwordRef.current?.value,
     };
     let msgr = {};
-    if (!user?.gmail) {
+    if (!user?.email) {
       msgr["gmail"] = "Gmail cannot be empty!";
     }
     if (!user.password) {
@@ -33,15 +34,17 @@ const Login = () => {
       return;
     }
     try {
-      const data = await axios.post("/auth/login", {
-        email: user.gmail,
-        password: user.password,
-      });
-      toast.success(data?.data?.msg);
-      localStorage.setItem("user", JSON.stringify(data?.data));
-      localStorage.setItem("token", data?.data?.token);
-      const decoded = jwtDecode(data?.data?.token);
-      navigate("/");
+      const data = await AuthAPI.login({ user });
+      localStorage.setItem("token", data?.data?.accessToken);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username: data?.data?.username,
+          avatar: data?.data?.avatar,
+        })
+      );
+      toast.success("Đăng nhập thành công.");
+      navigate("/admin/dashboard");
     } catch (err) {
       let ms = {
         gmail: "Gmail or password are incorrect!",
@@ -49,6 +52,7 @@ const Login = () => {
       };
 
       setMsg({ ...ms });
+      toast.error(err?.response?.data?.Error);
     }
   };
 
@@ -252,13 +256,12 @@ const Login = () => {
             </div>
           </div>
           <div className="inputBox">
-            <input onClick={handleLogin} type="submit" value="Đăng nhập" id="btn" />
-          </div>
-          <div className="group">
-            <Link to="/forgot_password">Quên mật khẩu</Link>
-            <Link style={{ textDecoration: "none" }} to="/register">
-              Đăng ký
-            </Link>
+            <input
+              onClick={handleLogin}
+              type="submit"
+              value="Đăng nhập"
+              id="btn"
+            />
           </div>
           {/* <div className="auth_wrap_other">
             <div id="loginGoogle"></div>

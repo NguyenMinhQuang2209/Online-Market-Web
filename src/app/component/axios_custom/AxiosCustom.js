@@ -4,7 +4,7 @@ import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://localhost:8080',
   timeout: 10000, 
   withCredentials:true
 });
@@ -28,11 +28,11 @@ axiosInstance.interceptors.request.use(
     if (token) {
       if (isTokenExpired(token)) {
         try {
-          const response = await axios.get("/auth/get_new_token", {
+          const response = await axios.get("/api/auth/common/get-new-access-token", {
             withCredentials: true,
           });
-          localStorage.setItem('token',response?.data?.token);
-          config.headers.Authorization = `Bearer ${response?.data?.token}`;
+          localStorage.setItem('token',response?.data?.accessToken);
+          config.headers.Authorization = `Bearer ${response?.data?.accessToken}`;
         } catch (refreshError) {
           localStorage.removeItem("user");
           localStorage.removeItem("token");

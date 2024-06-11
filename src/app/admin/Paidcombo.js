@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import "./customStyle.scss";
 import axios from "axios";
 import CategoryAPI from "../service/CategoryService";
+import { toast } from "react-toastify";
 
 const Paidcombo = () => {
   const [showAdd, setShowAdd] = useState(false);
@@ -145,6 +146,7 @@ const AddNewPaidCombo = ({ setShow }) => {
       }
     } catch (err) {
       console.log(err);
+      toast.error(err?.response?.data?.Error);
     }
   };
 
