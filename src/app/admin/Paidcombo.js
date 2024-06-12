@@ -140,7 +140,10 @@ const AddNewPaidCombo = ({ setShow }) => {
 
       if (!isErr) {
         const data = await CategoryAPI.create({
-          registration,
+          planName: registration.planName,
+          planDescription: registration.description,
+          planPrice: registration.price,
+          planDuration: registration.duration,
         });
         console.log(data);
       }
