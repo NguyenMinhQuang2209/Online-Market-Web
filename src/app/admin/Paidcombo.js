@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import "./customStyle.scss";
 import axios from "axios";
-import CategoryAPI from "../service/CategoryService";
+import CategoryService from "../service/CategoryService";
 import { toast } from "react-toastify";
 
 const Paidcombo = () => {
@@ -139,13 +139,13 @@ const AddNewPaidCombo = ({ setShow }) => {
       setErr(newError);
 
       if (!isErr) {
-        const data = await CategoryAPI.create({
+        const data = await CategoryService.create({
           planName: registration.planName,
           planDescription: registration.description,
-          planPrice: registration.price,
-          planDuration: registration.duration,
+          planPrice: registration.price * 1,
+          planDuration: registration.duration * 1, 
         });
-        console.log(data);
+        console.log(data?.data);
       }
     } catch (err) {
       console.log(err);

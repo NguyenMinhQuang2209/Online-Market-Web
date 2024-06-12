@@ -1,11 +1,12 @@
 import AxiosCustom from "../component/axios_custom/AxiosCustom";
 
-const CategoryAPI = {
-  create: async ({ registration }) => {
+const CategoryService = {
+  create: async (registration) => {
+    console.log(registration);
     return await AxiosCustom.post(
       "/api/admin/registration-plans/create",
       registration
     );
   },
 };
-export default CategoryAPI;
+export default CategoryService;
